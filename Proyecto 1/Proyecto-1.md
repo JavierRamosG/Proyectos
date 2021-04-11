@@ -1,7 +1,7 @@
 Proyecto 1 - Javier Ramos
 ================
 
-\#\#Carga de datos
+## Carga de datos
 
 ``` r
 library(quanteda)
@@ -55,7 +55,7 @@ setwd("D:/UAI/2021 - 1/Minería de datos/Proyectos/Proyecto 1")
 sanguchez <- read.csv("sanguchez.csv", header = TRUE, sep = ";")
 ```
 
-\#\#Eliminar datos innecesarios
+## Eliminar datos innecesarios
 
 ``` r
 #Se eliminarán aquellas columnas que no entregan datos relevantes como url, Local y Direccion:
@@ -66,7 +66,7 @@ sanguchez <- sanguchez[,!(colnames(sanguchez) %in% c("url", "Local", "Direccion"
 sanguchez <- na.omit(sanguchez)
 ```
 
-\#\#Análisis de ingredientes parte 1
+## Análisis de ingredientes parte 1
 
 ``` r
 #Se dejan todas las letras en minúsculas:
@@ -90,7 +90,7 @@ barplot(result$count, main = "Conteo de tuplas", ylab = "Total",names.arg = resu
 
 ![](Proyecto-1_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
-\#\#Análisis de ingredientes parte 2
+## Análisis de ingredientes parte 2
 
 ``` r
 #Realizando un copia de la base de datos principal:
@@ -120,7 +120,7 @@ length(p)
 #ing2 <- strsplit(result$collocation,patron)
 ```
 
-\#\#Conclusión
+## Conclusión
 
 ``` r
 #Mi objetivo era a través de las tuplas ir contando la cantidad de veces que se encuentran en cada una de las entidades del dataframe. Luego de eso, con un condicional iría agregando notas a una matriz de nxm y al final al sumar una columna se conseguiría la suma de las notas para cada tupla. Luego, los 5 con mayores puntajes pasarían a través de un proeso similar para determinar el precio a cobrar (habiendo, claro, limpiado la columnda de precios). Sin embargo, no pude hacer nada de esto y probé de varias formas pero no me funcioanaba. Esta vez perdí, pero en la siguiente ganaré.
