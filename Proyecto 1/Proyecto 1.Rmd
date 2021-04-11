@@ -82,4 +82,9 @@ length(p)
 ```
 ##Conclusión
 
-Mi objetivo era a través de las tuplas ir contando la cantidad de veces que se encuentran en cada una de las entidades del dataframe. Luego de eso, con un condicional iría agregando notas a una matriz de nxm y al final al sumar una columna se conseguiría la suma de las notas para cada tupla. Luego, los 5 con mayores puntajes pasarían a través de un proeso similar para determinar el precio a cobrar (habiendo, claro, limpiado la columnda de precios). Sin embargo, no pude hacer nada de esto y probé de varias formas pero no me funcioanaba. Esta vez perdí, pero en la siguiente ganaré.
+```{r}
+#Mi objetivo era a través de las tuplas ir contando la cantidad de veces que se encuentran en cada una de las entidades del dataframe. Luego de eso, con un condicional iría agregando notas a una matriz de nxm y al final al sumar una columna se conseguiría la suma de las notas para cada tupla. Luego, los 5 con mayores puntajes pasarían a través de un proeso similar para determinar el precio a cobrar (habiendo, claro, limpiado la columnda de precios). Sin embargo, no pude hacer nada de esto y probé de varias formas pero no me funcioanaba. Esta vez perdí, pero en la siguiente ganaré.
+
+
+```
+
