@@ -58,9 +58,11 @@ sanguchez <- read.csv("sanguchez.csv", header = TRUE, sep = ";")
 ### Eliminar datos innecesarios
 
 Se eliminarán aquellas columnas que no entregan datos relevantes como
-url, Local y Direccion: Nota: La variable “texto” sí es capaz de
-entregar información, pero escogí eliminarla porque ya me era difícil
-trabajar con la variable “ingredientes”
+url, Local y Direccion.
+
+Nota: La variable “texto” sí es capaz de entregar información, pero
+escogí eliminarla porque ya me era difícil trabajar con la variable
+“ingredientes”
 
 ``` r
 sanguchez <- sanguchez[,!(colnames(sanguchez) %in% c("url", "Local", "Direccion", "texto"))]
