@@ -7,7 +7,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Carga de datos
+### Carga de datos
 ```{r}
 library(quanteda)
 library(dplyr)
@@ -17,45 +17,54 @@ library(ggplot2)
 library(quanteda.textstats)
 library(quanteda.textplots)
 
-setwd("D:/UAI/2021 - 1/Minería de datos/Proyectos/Proyecto 1")
+setwd("D:/UAI/Minería de datos/Proyectos/Proyecto 1")
 sanguchez <- read.csv("sanguchez.csv", header = TRUE, sep = ";")
 ```
 
-## Eliminar datos innecesarios
-```{r}
-#Se eliminarán aquellas columnas que no entregan datos relevantes como url, Local y Direccion:
-#Nota: La variable "texto" sí es capaz de entregar información, pero escogí eliminarla porque ya me era difícil trabajar con la variable "ingredientes"
-sanguchez <- sanguchez[,!(colnames(sanguchez) %in% c("url", "Local", "Direccion", "texto"))]
+### Eliminar datos innecesarios
 
-#Ahora se procederá a eliminar aquellas entidades que contengan datos vaciós:
+Se eliminarán aquellas columnas que no entregan datos relevantes como url, Local y Direccion:
+Nota: La variable "texto" sí es capaz de entregar información, pero escogí eliminarla porque ya me era difícil trabajar con la variable "ingredientes"
+```{r}
+sanguchez <- sanguchez[,!(colnames(sanguchez) %in% c("url", "Local", "Direccion", "texto"))]
+```
+
+Ahora se procederá a eliminar aquellas entidades que contengan datos vaciós:
+```{r}
 sanguchez <- na.omit(sanguchez)
 ```
 
-## Análisis de ingredientes parte 1
-```{r}
-#Se dejan todas las letras en minúsculas:
-sanguchez$Ingredientes <- char_tolower(as.character(sanguchez$Ingredientes))
+### Análisis de ingredientes parte 1
 
-#Se procede a separar los textos:
+Se dejan todas las letras en minúsculas:
+```{r}
+sanguchez$Ingredientes <- char_tolower(as.character(sanguchez$Ingredientes))
+```
+
+Se procede a separar los textos:
+```{r}
 ing <- tokens(sanguchez$Ingredientes, remove_punct = TRUE, remove_symbols = TRUE, remove_numbers = TRUE)
 ing <- tokens_remove(ing, stopwords("es"))
+```
 
-#Se genera un estudio de tuplas:
+Se genera un estudio de tuplas:
+```{r}
 result <- textstat_collocations(ing, size = 2)
+```
 
-#Notar que a mayor Lambda, mayor es la relación entre las palabras de la misma tupla. Luego, se dejarán aquellas tuplas que cumplan la condición de que Lambda >= 5. Además, se escogerán aquellas tuplas que tengan al menos 10 repeticiones:
-
+Notar que a mayor Lambda, mayor es la relación entre las palabras de la misma tupla. Luego, se dejarán aquellas tuplas que cumplan la condición de que Lambda >= 5. Además, se escogerán aquellas tuplas que tengan al menos 10 repeticiones:
+```{r}
 result <- filter(result,result$lambda > 5)
 result <- filter(result,result$count > 10)
 result <- result[order(result$count),decreasing = FALSE]
 
 barplot(result$count, main = "Conteo de tuplas", ylab = "Total",names.arg = result$collocation, las=2)
-
 ```
 
-## Análisis de ingredientes parte 2
+### Análisis de ingredientes parte 2
+
+Realizando un copia de la base de datos principal:
 ```{r}
-#Realizando un copia de la base de datos principal:
 aux <- sanguchez
 aux <- tokens(aux$Ingredientes)
 #p <- kwic(aux, pattern = phrase(result$collocation[1]))
@@ -80,11 +89,7 @@ length(p)
 
 
 ```
-## Conclusión
 
-```{r}
-#Mi objetivo era a través de las tuplas ir contando la cantidad de veces que se encuentran en cada una de las entidades del dataframe. Luego de eso, con un condicional iría agregando notas a una matriz de nxm y al final al sumar una columna se conseguiría la suma de las notas para cada tupla. Luego, los 5 con mayores puntajes pasarían a través de un proeso similar para determinar el precio a cobrar (habiendo, claro, limpiado la columnda de precios). Sin embargo, no pude hacer nada de esto y probé de varias formas pero no me funcioanaba. Esta vez perdí, pero en la siguiente ganaré.
+### Conclusión
 
-
-```
-
+Mi objetivo era que a través de las tuplas se pueda ir contando la cantidad de veces que se encuentran en cada una de las entidades del dataframe. Luego de eso, con un condicional iría agregando notas a una matriz de nxm y al final al sumar una columna se conseguiría la suma de las notas para cada tupla. Luego, los 5 con mayores puntajes pasarían a través de un proeso similar para determinar el precio a cobrar (habiendo, claro, limpiado la columnda de precios). Sin embargo, no pude hacer nada de esto y probé de varias formas pero no me funcioanaba. Esta vez perdí, pero en la siguiente ganaré.

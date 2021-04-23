@@ -1,7 +1,7 @@
 Proyecto 1 - Javier Ramos
 ================
 
-## Carga de datos
+### Carga de datos
 
 ``` r
 library(quanteda)
@@ -11,7 +11,7 @@ library(quanteda)
     ## Unicode version: 10.0
     ## ICU version: 61.1
 
-    ## Parallel computing: 8 of 8 threads used.
+    ## Parallel computing: 12 of 12 threads used.
 
     ## See https://quanteda.io for tutorials and examples.
 
@@ -34,10 +34,10 @@ library(dplyr)
 library(tidyverse)
 ```
 
-    ## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+    ## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 
     ## v ggplot2 3.3.3     v purrr   0.3.4
-    ## v tibble  3.0.3     v stringr 1.4.0
+    ## v tibble  3.1.0     v stringr 1.4.0
     ## v tidyr   1.1.3     v forcats 0.5.1
     ## v readr   1.4.0
 
@@ -51,36 +51,55 @@ library(ggplot2)
 library(quanteda.textstats)
 library(quanteda.textplots)
 
-setwd("D:/UAI/2021 - 1/Minería de datos/Proyectos/Proyecto 1")
+setwd("D:/UAI/Minería de datos/Proyectos/Proyecto 1")
 sanguchez <- read.csv("sanguchez.csv", header = TRUE, sep = ";")
 ```
 
-## Eliminar datos innecesarios
+### Eliminar datos innecesarios
+
+Se eliminarán aquellas columnas que no entregan datos relevantes como
+url, Local y Direccion: Nota: La variable “texto” sí es capaz de
+entregar información, pero escogí eliminarla porque ya me era difícil
+trabajar con la variable “ingredientes”
 
 ``` r
-#Se eliminarán aquellas columnas que no entregan datos relevantes como url, Local y Direccion:
-#Nota: La variable "texto" sí es capaz de entregar información, pero escogí eliminarla porque ya me era difícil trabajar con la variable "ingredientes"
 sanguchez <- sanguchez[,!(colnames(sanguchez) %in% c("url", "Local", "Direccion", "texto"))]
+```
 
-#Ahora se procederá a eliminar aquellas entidades que contengan datos vaciós:
+Ahora se procederá a eliminar aquellas entidades que contengan datos
+vaciós:
+
+``` r
 sanguchez <- na.omit(sanguchez)
 ```
 
-## Análisis de ingredientes parte 1
+### Análisis de ingredientes parte 1
+
+Se dejan todas las letras en minúsculas:
 
 ``` r
-#Se dejan todas las letras en minúsculas:
 sanguchez$Ingredientes <- char_tolower(as.character(sanguchez$Ingredientes))
+```
 
-#Se procede a separar los textos:
+Se procede a separar los textos:
+
+``` r
 ing <- tokens(sanguchez$Ingredientes, remove_punct = TRUE, remove_symbols = TRUE, remove_numbers = TRUE)
 ing <- tokens_remove(ing, stopwords("es"))
+```
 
-#Se genera un estudio de tuplas:
+Se genera un estudio de tuplas:
+
+``` r
 result <- textstat_collocations(ing, size = 2)
+```
 
-#Notar que a mayor Lambda, mayor es la relación entre las palabras de la misma tupla. Luego, se dejarán aquellas tuplas que cumplan la condición de que Lambda >= 5. Además, se escogerán aquellas tuplas que tengan al menos 10 repeticiones:
+Notar que a mayor Lambda, mayor es la relación entre las palabras de la
+misma tupla. Luego, se dejarán aquellas tuplas que cumplan la condición
+de que Lambda &gt;= 5. Además, se escogerán aquellas tuplas que tengan
+al menos 10 repeticiones:
 
+``` r
 result <- filter(result,result$lambda > 5)
 result <- filter(result,result$count > 10)
 result <- result[order(result$count),decreasing = FALSE]
@@ -88,12 +107,13 @@ result <- result[order(result$count),decreasing = FALSE]
 barplot(result$count, main = "Conteo de tuplas", ylab = "Total",names.arg = result$collocation, las=2)
 ```
 
-![](Proyecto-1_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](Proyecto-1_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-## Análisis de ingredientes parte 2
+### Análisis de ingredientes parte 2
+
+Realizando un copia de la base de datos principal:
 
 ``` r
-#Realizando un copia de la base de datos principal:
 aux <- sanguchez
 aux <- tokens(aux$Ingredientes)
 #p <- kwic(aux, pattern = phrase(result$collocation[1]))
@@ -120,8 +140,14 @@ length(p)
 #ing2 <- strsplit(result$collocation,patron)
 ```
 
-## Conclusión
+### Conclusión
 
-``` r
-#Mi objetivo era a través de las tuplas ir contando la cantidad de veces que se encuentran en cada una de las entidades del dataframe. Luego de eso, con un condicional iría agregando notas a una matriz de nxm y al final al sumar una columna se conseguiría la suma de las notas para cada tupla. Luego, los 5 con mayores puntajes pasarían a través de un proeso similar para determinar el precio a cobrar (habiendo, claro, limpiado la columnda de precios). Sin embargo, no pude hacer nada de esto y probé de varias formas pero no me funcioanaba. Esta vez perdí, pero en la siguiente ganaré.
-```
+Mi objetivo era que a través de las tuplas se pueda ir contando la
+cantidad de veces que se encuentran en cada una de las entidades del
+dataframe. Luego de eso, con un condicional iría agregando notas a una
+matriz de nxm y al final al sumar una columna se conseguiría la suma de
+las notas para cada tupla. Luego, los 5 con mayores puntajes pasarían a
+través de un proeso similar para determinar el precio a cobrar
+(habiendo, claro, limpiado la columnda de precios). Sin embargo, no pude
+hacer nada de esto y probé de varias formas pero no me funcioanaba. Esta
+vez perdí, pero en la siguiente ganaré.
