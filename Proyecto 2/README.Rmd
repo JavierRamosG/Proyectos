@@ -1,0 +1,72 @@
+---
+title: "Proyecto 2 - Javier Ramos"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Creación de Playlist Spotify
+
+## 1. Carga de data
+
+### 1.1 Librerias
+```{r}
+library(quanteda)
+library(dplyr)
+library(tidyverse)
+library(utf8)
+```
+
+### 1.2 Base de datos
+```{r}
+load("D:/UAI/Minería de datos/Proyectos/Proyecto 2/beats.RData")
+```
+  
+## 2. Limpieza de la data
+
+### 2.1 Eliminar data
+
+Se procederá a eliminar aquellos datos que no se utilizarán en el análisis
+```{r}
+beats <- beats[,!(colnames(beats) %in% c("artist_id", "album_id", "album_type","album_release_date", "album_release_date_precision", "track_id", "analysis_url", "disc_number", "explicit", "track_href", "is_local", "track_preview_url", "track_number", "type", "track_uri", "external_urls.spotify", "album_name", "key_mode", "mode_name", "key_name"))]
+```
+
+### 2.2 Eliminar datos vacíos
+
+Se procederá a eliminar aquellas entidades que contengan atributos vacíos
+```{r}
+beats <- na.omit(beats)
+```
+
+### 2.3 Normalizar data
+
+Se pondrán en minusculas todas las variables del tipo char
+```{r}
+beats$artist_name <- char_tolower(as.character(beats$artist_name))
+beats$track_name <- char_tolower(as.character(beats$track_name))
+```
+
+## 3. Análisis de ouliers
+
+### 3.1 Valores atípicos: Variable "album_release_year"
+
+Se observará si la data contiene en alguna de sus variables datos atípicos
+```{r}
+hist(beats$danceability)
+boxplot(beats$danceability, horizontal = TRUE)
+boxplot.stats(beats$danceability)
+
+```
+
+## 3. Análisis de claustering
+
+Se escalará la data
+```{r}
+
+escal_data = scale(beats) %>% as_tibble()
+escal_data %>% summary()
+```
+
+
