@@ -17,6 +17,9 @@ library(quanteda)
 library(dplyr)
 library(tidyverse)
 library(utf8)
+library(cluster)
+library(mclust)
+library(e1071)
 ```
 
 ### 1.2 Base de datos
@@ -24,49 +27,289 @@ library(utf8)
 load("D:/UAI/Minería de datos/Proyectos/Proyecto 2/beats.RData")
 ```
   
-## 2. Limpieza de la data
+## 2. Preprocesamiento de datos
 
 ### 2.1 Eliminar data
 
 Se procederá a eliminar aquellos datos que no se utilizarán en el análisis
 ```{r}
-beats <- beats[,!(colnames(beats) %in% c("artist_id", "album_id", "album_type","album_release_date", "album_release_date_precision", "track_id", "analysis_url", "disc_number", "explicit", "track_href", "is_local", "track_preview_url", "track_number", "type", "track_uri", "external_urls.spotify", "album_name", "key_mode", "mode_name", "key_name"))]
+beats <- beats[,!(colnames(beats) %in% c("artist_id", "album_id", "album_type","album_release_date", "album_release_date_precision", "analysis_url", "disc_number", "explicit", "track_href", "is_local", "track_preview_url", "track_number", "type", "track_uri", "external_urls.spotify", "album_name", "key_mode", "mode_name", "key_name", "time_signature", "album_release_year"))]
 ```
 
 ### 2.2 Eliminar datos vacíos
 
 Se procederá a eliminar aquellas entidades que contengan atributos vacíos
 ```{r}
+beats[beats == ""] <- NA
 beats <- na.omit(beats)
 ```
 
-### 2.3 Normalizar data
+## 2.3 Eliminar datos duplicados
 
-Se pondrán en minusculas todas las variables del tipo char
+Se eliminarán aquellas canciones que estén duplicadas
 ```{r}
-beats$artist_name <- char_tolower(as.character(beats$artist_name))
-beats$track_name <- char_tolower(as.character(beats$track_name))
-```
-
-## 3. Análisis de ouliers
-
-### 3.1 Valores atípicos: Variable "album_release_year"
-
-Se observará si la data contiene en alguna de sus variables datos atípicos
-```{r}
-hist(beats$danceability)
-boxplot(beats$danceability, horizontal = TRUE)
-boxplot.stats(beats$danceability)
+beats <- beats[!duplicated(beats$track_id),]
 
 ```
 
-## 3. Análisis de claustering
 
-Se escalará la data
+### 2.4 Revisar estructura de los datos
+
+Se transformará cada variable a su tipo correspondiente
 ```{r}
+beats$track_id <- as.character(beats$track_id)
+beats$track_name <- as.character(beats$track_name)
+beats$artist_name <- as.character(beats$artist_name)
 
-escal_data = scale(beats) %>% as_tibble()
-escal_data %>% summary()
+beats$danceability <- as.double(as.character(beats$danceability))
+beats$energy <- as.double(as.character(beats$energy))
+beats$key <- as.double(as.character(beats$key))
+beats$loudness <- as.double(as.character(beats$loudness))
+beats$mode <- as.double(as.character(beats$mode))
+beats$speechiness <- as.double(as.character(beats$speechiness)) 
+beats$acousticness <- as.double(as.character(beats$acousticness))
+beats$instrumentalness <- as.double(as.character(beats$instrumentalness))
+beats$liveness <- as.double(as.character(beats$liveness))
+beats$valence <- as.double(as.character(beats$valence))
+beats$tempo <- as.double(as.character(beats$tempo))
+beats$duration_ms <- as.double(as.character(beats$duration_ms))
 ```
+
+### 2.5 Selección aleatoria
+
+Se seleccionarán datos de forma aleatoria para poder ocupar menos recursos computacionales
+```{r}
+set.seed(500)
+
+spBeats <- beats[sample(nrow(beats), 10000),]
+
+```
+
+### 2.6 Separar datos
+
+Se separarán los datos para trabajar con variables de una misma "familia", esto es, de un mismo tipo
+```{r}
+dt_char <- c("track_id", "track_name", "artist_name")
+
+dt_num <-c("key", "danceability", "energy", "loudness", "mode", "speechiness","acousticness","instrumentalness", "liveness", "valence", "tempo", "duration_ms")
+
+data_num <- spBeats %>% 
+  select(dt_num)
+data_char <- spBeats %>% 
+  select(dt_char)
+```
+
+### 2.7 Escalar datos
+
+Se procede a realizar el escalamiento de datos para su posterior análisis
+```{r}
+escal_data <- sapply(data_num, scale) %>% as.data.frame()
+```
+
+## 3. Procesamiento de datos
+
+### 3.1 Análisis de claustering: K-means
+
+Ahora que está escalada la data, se aplicará el algoritmo de kmedias, que viene implementado en R base. Para probar, vamos a aplicar kmedias = 10
+```{r}
+modelo_kmeans <- kmeans(escal_data, centers = 7)
+
+escal_data$clus <- modelo_kmeans$cluster %>% as.factor()
+
+ggplot(escal_data, aes(valence, energy, color=clus)) +
+  geom_point(alpha=0.5, show.legend = T) +
+  theme_bw()
+
+ggplot(escal_data, aes(speechiness, acousticness, color=clus)) +
+  geom_point(alpha=0.5, show.legend = T) +
+  theme_bw()
+
+ggplot(escal_data, aes(instrumentalness, danceability, color=clus)) +
+  geom_point(alpha=0.5, show.legend = T) +
+  theme_bw()
+```
+
+
+Los gráficos entregados no son muy claros como para distinguir grupos, que es lo que se busca, es decir, cercanía entre las canciones. Luego, se procede a realizar la evolución suma de cuadrados intra-clusters
+```{r}
+SSinterior <- numeric(30)
+for(k in 1:30){
+  modelo <- kmeans(escal_data, centers = k)
+  SSinterior[k] <- modelo$tot.withinss
+}
+plot(SSinterior)
+```
+
+En el gráfico se aprecia que la curva se comienza a estabilizar en k = 8, por lo que se tomará este valor. Para confirmar este valor se usará el coeficiente de silueta
+```{r}
+coefSil=numeric(30)
+for (k in 2:30){
+  modelo <- kmeans(escal_data, centers = k)
+  temp <- silhouette(modelo$cluster,dist(escal_data ))
+  coefSil[k] <- mean(temp[,3])
+}
+tempDF=data.frame(CS=coefSil,K=c(1:30))
+ggplot(tempDF, aes(x=K, y=CS)) + 
+  geom_line() +
+  scale_x_continuous(breaks=c(1:30))
+```
+
+Luego, se tiene que el K correcto es cuando es igual a 2 y no igual a 7 como se propuso antes. Luego, al realizar los mismos gráficos anteriores considerando este nuevo valor de k se tiene
+```{r}
+modelo_kmeans2 <- kmeans(escal_data, centers = 2)
+
+escal_data$clus <- modelo_kmeans2$cluster %>% as.factor()
+
+ggplot(escal_data, aes(valence, energy, color=clus)) +
+  geom_point(alpha=0.5, show.legend = T) +
+  theme_bw()
+
+ggplot(escal_data, aes(speechiness, acousticness, color=clus)) +
+  geom_point(alpha=0.5, show.legend = T) +
+  theme_bw()
+
+ggplot(escal_data, aes(instrumentalness, danceability, color=clus)) +
+  geom_point(alpha=0.5, show.legend = T) +
+  theme_bw()
+```
+
+### 3.2 Análisis de claustering: Fuzzy C Means
+
+Se usará este algoritmo para contrastar con la información antes obtenida, es decir, que no son 7 clusters, sino que son 2
+```{r}
+modelo_c_means <- cmeans(escal_data,  7, m=2)
+
+ggplot(escal_data, aes(valence, energy, color = factor(modelo_c_means$cluster))) + 
+  geom_point(alpha = 0.3) 
+
+ggplot(escal_data, aes(speechiness, acousticness, color = factor(modelo_c_means$cluster))) + 
+  geom_point(alpha = 0.3) 
+
+ggplot(escal_data, aes(instrumentalness, danceability, color = factor(modelo_c_means$cluster))) + 
+  geom_point(alpha = 0.3) 
+```
+
+Luego, nuevamente todo se ve muy difuso, sin exisitr claridad en los grupos. Luego, se analizará para 2 clusters
+```{r}
+modelo_c_means <- cmeans(escal_data,  2, m=2)
+
+ggplot(escal_data, aes(valence, energy, color = factor(modelo_c_means$cluster))) + 
+  geom_point(alpha = 0.3) 
+
+ggplot(escal_data, aes(speechiness, acousticness, color = factor(modelo_c_means$cluster))) + 
+  geom_point(alpha = 0.3) 
+
+ggplot(escal_data, aes(instrumentalness, danceability, color = factor(modelo_c_means$cluster))) + 
+  geom_point(alpha = 0.3) 
+```
+
+Para saber qué tan efectivo es lo aplicado anteriormente se calculará el Coeficiente de partición difusa (FPC)
+```{r}
+matriz <- modelo_c_means$membership%*%t(modelo_c_means$membership)
+
+(FPC <- sum(matriz*diag(nrow(matriz)))/nrow(matriz))
+```
+Luego, se tiene que con 2 clusters se obtiene un modelo medianamente bueno
+
+### 3.3 Análisis de claustering: GMM
+
+Por último, se analizarán los clusters a través del algoritmo GGM
+```{r}
+model_gmm = Mclust(escal_data)
+
+ggplot(escal_data) + 
+  aes(x=valence, y=energy, color=factor(model_gmm$classification)) + 
+  geom_point(alpha=1)
+
+ggplot(escal_data) + 
+  aes(x=speechiness, y=acousticness, color=factor(model_gmm$classification)) + 
+  geom_point(alpha=1)
+
+ggplot(escal_data) + 
+  aes(x=instrumentalness, y=danceability, color=factor(model_gmm$classification)) + 
+  geom_point(alpha=1)
+
+plot(model_gmm, what = "BIC")
+```
+
+Luego, a partir de los gráficos se aprecia que los clusters son 5 y, el último gráfico, podría explicar mejor esto, ya que justo a partir del número 5 el gráfico se empieza a comportar como **una sola recta**. Aún así, para tener mejor claridad se hará un summary()
+```{r}
+summary(model_gmm)
+```
+
+## 4. Crear la playlist
+
+### 4.1 Clasificar canciones
+
+Se clasificará cada entidad de acuerdo a su cluster correspondiente
+```{r}
+clasificacion <- NULL
+cluster <- model_gmm$classification
+
+clasificacion <- cbind(spBeats, cluster)
+```
+
+
+### 4.2 Escoger canción inicial
+
+Para escoger la canción a partir de la cual se creará la playlist, se hará una elección aleatoria
+```{r}
+c_inicial <- clasificacion[sample(nrow(clasificacion), 1),]
+```
+Nombre de la canción:
+```{r}
+print(c_inicial$track_name)
+```
+
+Nombre del Artista:
+```{r}
+print(c_inicial$artist_name)
+```
+
+Clasificación de cluster:
+```{r}
+print(c_inicial$cluster)
+```
+
+### 4.3 Creación de Playlist
+
+Se tiene que el tiempo mínimo que debe durar la playlist es de 3 horas. Luego, se tiene lo siguiente
+```{r}
+time <- 10800000
+pl_spotify <- NULL
+pl_spotify <- rbind.data.frame(pl_spotify, c_inicial)
+
+aux <- c_inicial$duration_ms
+
+while (aux <= time) {
+  
+  aux2 <- clasificacion[sample(nrow(clasificacion), 1),]
+  
+  pl_spotify <- rbind.data.frame(pl_spotify, aux2)
+  
+  aux = aux + as.numeric(aux2$duration_ms) 
+}
+```
+A partir de lo anterior se genera un error, debido a que se duplica la canción inicial. Por lo tanto, se eliminará el duplicado
+```{r}
+pl_spotify <- pl_spotify[!duplicated(pl_spotify$track_id),]
+```
+
+### 4.4 La Playlist
+
+Luego, para dar más orden a la lista se realizarán los siguientes ajustes
+```{r}
+pl_spotify <- pl_spotify[,!(colnames(pl_spotify) %in% c("danceability", "energy", "key", "loudness", "mode", "acousticness", "speechiness", "instrumentalness", "liveness", "valence", "tempo", "track_id", "cluster"))]
+
+pl_spotify <- pl_spotify %>% mutate(duration_min = pl_spotify$duration_ms/60000)
+
+pl_spotify <- pl_spotify[,!(colnames(pl_spotify) %in% c("duration_ms"))]
+```
+
+Entonces, la Playlist es la siguiente:
+```{r}
+print(pl_spotify)
+```
+
 
 
