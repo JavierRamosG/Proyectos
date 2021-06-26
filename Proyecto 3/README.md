@@ -214,15 +214,6 @@ Para adelantar trabajo, se iteraron 13 veces, llegando al siguiente
 resultado:
 
 ``` r
-attach(endurance)
-```
-
-    ## The following objects are masked from endurance (pos = 3):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-``` r
 it_distance <- distance[distance < 41550.5]
 boxplot(it_distance, horizontal = TRUE)
 ```
@@ -257,20 +248,6 @@ boxplot(endurance$elev_low, horizontal = TRUE)
 
 Para adelantar trabajo, se iteraron 8 veces, llegando al siguiente
 resultado:
-
-``` r
-attach(endurance)
-```
-
-    ## The following objects are masked from endurance (pos = 3):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 4):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
 
 ``` r
 it_elev_low <- elev_low[elev_low > -608.3 & elev_low < 1563.4]
@@ -310,25 +287,6 @@ Para adelantar trabajo, se iteraron 13 veces, llegando al siguiente
 resultado:
 
 ``` r
-attach(endurance)
-```
-
-    ## The following objects are masked from endurance (pos = 3):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 4):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 5):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-``` r
 it_elev_high <- elev_high[elev_high > -499.2 &elev_high < 2007.5]
 boxplot(it_elev_high, horizontal = TRUE)
 ```
@@ -364,30 +322,6 @@ boxplot(endurance$max_speed, horizontal = TRUE)
 
 Para adelantar trabajo, se iteraron 5 veces, llegando al siguiente
 resultado:
-
-``` r
-attach(endurance)
-```
-
-    ## The following objects are masked from endurance (pos = 3):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 4):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 5):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 6):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
 
 ``` r
 it_max_speed <- max_speed[max_speed < 27.37]
@@ -426,35 +360,6 @@ Para adelantar trabajo, se iteraron 5 veces, llegando al siguiente
 resultado:
 
 ``` r
-attach(endurance)
-```
-
-    ## The following objects are masked from endurance (pos = 3):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 4):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 5):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 6):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 7):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-``` r
 it_max_speed <- max_speed[max_speed < 27.37]
 boxplot(it_max_speed, horizontal = TRUE)
 ```
@@ -489,40 +394,6 @@ boxplot(endurance$moving_time, horizontal = TRUE)
 
 Para adelantar trabajo, se iteraron 11 veces, llegando al siguiente
 resultado:
-
-``` r
-attach(endurance)
-```
-
-    ## The following objects are masked from endurance (pos = 3):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 4):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 5):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 6):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 7):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 8):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
 
 ``` r
 it_moving_time <- moving_time[moving_time < 11799]
@@ -561,45 +432,6 @@ Para adelantar trabajo, se iteraron 15 veces, llegando al siguiente
 resultado:
 
 ``` r
-attach(endurance)
-```
-
-    ## The following objects are masked from endurance (pos = 3):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 4):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 5):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 6):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 7):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 8):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 9):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-``` r
 it_elapsed_time <- elapsed_time[elapsed_time < 14073]
 boxplot(it_elapsed_time, horizontal = TRUE)
 ```
@@ -636,50 +468,6 @@ Para adelantar trabajo, se iteraron 8 veces, llegando al siguiente
 resultado:
 
 ``` r
-attach(endurance)
-```
-
-    ## The following objects are masked from endurance (pos = 3):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 4):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 5):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 6):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 7):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 8):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 9):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 10):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-``` r
 it1_average_speed <- average_speed[average_speed < 10.229]
 boxplot(it1_average_speed, horizontal = TRUE)
 ```
@@ -714,55 +502,6 @@ boxplot(endurance$total_elevation_gain, horizontal = TRUE)
 
 Para adelantar trabajo, se iteraron 7 veces, llegando al siguiente
 resultado:
-
-``` r
-attach(endurance)
-```
-
-    ## The following objects are masked from endurance (pos = 3):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 4):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 5):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 6):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 7):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 8):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 9):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 10):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
-
-    ## The following objects are masked from endurance (pos = 11):
-    ## 
-    ##     average_speed, calories, distance, elapsed_time, elev_high,
-    ##     elev_low, max_speed, moving_time, total_elevation_gain, type
 
 ``` r
 it_total_elevation_gain <- total_elevation_gain[total_elevation_gain < 1342]

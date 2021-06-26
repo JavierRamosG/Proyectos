@@ -88,7 +88,6 @@ boxplot(endurance$distance, horizontal = TRUE)
 
 Para adelantar trabajo, se iteraron 13 veces, llegando al siguiente resultado:
 ```{r}
-attach(endurance)
 it_distance <- distance[distance < 41550.5]
 boxplot(it_distance, horizontal = TRUE)
 boxplot.stats(it_distance)
@@ -104,7 +103,6 @@ boxplot(endurance$elev_low, horizontal = TRUE)
 Para adelantar trabajo, se iteraron 8 veces, llegando al siguiente resultado:
 
 ```{r}
-attach(endurance)
 it_elev_low <- elev_low[elev_low > -608.3 & elev_low < 1563.4]
 boxplot(it_elev_low, horizontal = TRUE)
 boxplot.stats(it_elev_low)
@@ -119,7 +117,6 @@ boxplot(endurance$elev_high, horizontal = TRUE)
 
 Para adelantar trabajo, se iteraron 13 veces, llegando al siguiente resultado:
 ```{r}
-attach(endurance)
 it_elev_high <- elev_high[elev_high > -499.2 &elev_high < 2007.5]
 boxplot(it_elev_high, horizontal = TRUE)
 boxplot.stats(it_elev_high)
@@ -134,7 +131,6 @@ boxplot(endurance$max_speed, horizontal = TRUE)
 
 Para adelantar trabajo, se iteraron 5 veces, llegando al siguiente resultado:
 ```{r}
-attach(endurance)
 it_max_speed <- max_speed[max_speed < 27.37]
 boxplot(it_max_speed, horizontal = TRUE)
 boxplot.stats(it_max_speed)
@@ -149,7 +145,6 @@ boxplot(endurance$max_speed, horizontal = TRUE)
 
 Para adelantar trabajo, se iteraron 5 veces, llegando al siguiente resultado:
 ```{r}
-attach(endurance)
 it_max_speed <- max_speed[max_speed < 27.37]
 boxplot(it_max_speed, horizontal = TRUE)
 boxplot.stats(it_max_speed)
@@ -164,7 +159,6 @@ boxplot(endurance$moving_time, horizontal = TRUE)
 
 Para adelantar trabajo, se iteraron 11 veces, llegando al siguiente resultado:
 ```{r}
-attach(endurance)
 it_moving_time <- moving_time[moving_time < 11799]
 boxplot(it_moving_time, horizontal = TRUE)
 boxplot.stats(it_moving_time)
@@ -179,7 +173,6 @@ boxplot(endurance$elapsed_time, horizontal = TRUE)
 
 Para adelantar trabajo, se iteraron 15 veces, llegando al siguiente resultado:
 ```{r}
-attach(endurance)
 it_elapsed_time <- elapsed_time[elapsed_time < 14073]
 boxplot(it_elapsed_time, horizontal = TRUE)
 boxplot.stats(it_elapsed_time)
@@ -194,7 +187,6 @@ boxplot(endurance$average_speed, horizontal = TRUE)
 
 Para adelantar trabajo, se iteraron 8 veces, llegando al siguiente resultado:
 ```{r}
-attach(endurance)
 it1_average_speed <- average_speed[average_speed < 10.229]
 boxplot(it1_average_speed, horizontal = TRUE)
 boxplot.stats(it1_average_speed)
@@ -209,7 +201,6 @@ boxplot(endurance$total_elevation_gain, horizontal = TRUE)
 
 Para adelantar trabajo, se iteraron 7 veces, llegando al siguiente resultado:
 ```{r}
-attach(endurance)
 it_total_elevation_gain <- total_elevation_gain[total_elevation_gain < 1342]
 boxplot(it_total_elevation_gain, horizontal = TRUE)
 boxplot.stats(it_total_elevation_gain)
