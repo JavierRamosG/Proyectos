@@ -69,7 +69,6 @@ Se realizará un análisis para ver si hay presencia de valores atípicos dentro
 *1) Calories:*
 ```{r}
 boxplot(endurance$calories, horizontal = TRUE)
-boxplot.stats(endurance$calories)
 ```
 
 Para adelantar trabajo, se iteraron 6 veces, llegando al siguiente resultado:
@@ -85,7 +84,6 @@ Por lo tanto, los valores de la variable calories deben ser menores a 2099,5. Se
 *2) Distance:*
 ```{r}
 boxplot(endurance$distance, horizontal = TRUE)
-boxplot.stats(endurance$distance)
 ```
 
 Para adelantar trabajo, se iteraron 13 veces, llegando al siguiente resultado:
@@ -94,7 +92,6 @@ attach(endurance)
 it_distance <- distance[distance < 41550.5]
 boxplot(it_distance, horizontal = TRUE)
 boxplot.stats(it_distance)
-min(boxplot.stats(it_distance)$out)
 ```
 
 Por lo tanto, la variable distance debe ser menor a 41.550,5. 
@@ -102,7 +99,6 @@ Por lo tanto, la variable distance debe ser menor a 41.550,5.
 *3) Elev_low:*
 ```{r}
 boxplot(endurance$elev_low, horizontal = TRUE)
-boxplot.stats(endurance$elev_low)
 ```
 
 Para adelantar trabajo, se iteraron 8 veces, llegando al siguiente resultado:
@@ -119,7 +115,6 @@ Por lo tanto, la variable elev_low debe ser mayor a -608,3 y menor a 1563,4.
 *4) Elev_high:*
 ```{r}
 boxplot(endurance$elev_high, horizontal = TRUE)
-boxplot.stats(endurance$elev_high)
 ```
 
 Para adelantar trabajo, se iteraron 13 veces, llegando al siguiente resultado:
@@ -135,7 +130,6 @@ Por lo tanto, la variable elev_high debe ser mayor a -499,2 y menor a 2007,5.
 *5) max_speed:*
 ```{r}
 boxplot(endurance$max_speed, horizontal = TRUE)
-boxplot.stats(endurance$max_speed)
 ```
 
 Para adelantar trabajo, se iteraron 5 veces, llegando al siguiente resultado:
@@ -151,7 +145,6 @@ Por lo tanto, la variable max_speed debe ser menor a 27,37.
 *6) max_speed:*
 ```{r}
 boxplot(endurance$max_speed, horizontal = TRUE)
-boxplot.stats(endurance$max_speed)
 ```
 
 Para adelantar trabajo, se iteraron 5 veces, llegando al siguiente resultado:
@@ -167,7 +160,6 @@ Por lo tanto, la variable max_speed debe ser menor a 27,37.
 *7) moving_time:*
 ```{r}
 boxplot(endurance$moving_time, horizontal = TRUE)
-boxplot.stats(endurance$moving_time)
 ```
 
 Para adelantar trabajo, se iteraron 11 veces, llegando al siguiente resultado:
@@ -183,7 +175,6 @@ Por lo tanto, la variable moving_time debe ser menor a 11.799.
 *8) elapsed_time:*
 ```{r}
 boxplot(endurance$elapsed_time, horizontal = TRUE)
-boxplot.stats(endurance$elapsed_time)
 ```
 
 Para adelantar trabajo, se iteraron 15 veces, llegando al siguiente resultado:
@@ -199,7 +190,6 @@ Por lo tanto, la variable elapsed_time debe ser menor a 14.073.
 *9) average_speed:*
 ```{r}
 boxplot(endurance$average_speed, horizontal = TRUE)
-boxplot.stats(endurance$average_speed)
 ```
 
 Para adelantar trabajo, se iteraron 8 veces, llegando al siguiente resultado:
@@ -215,7 +205,6 @@ Por lo tanto, la variable average_speed debe ser menor a 10,229.
 *10) total_elevetaion_gain:*
 ```{r}
 boxplot(endurance$total_elevation_gain, horizontal = TRUE)
-boxplot.stats(endurance$total_elevation_gain)
 ```
 
 Para adelantar trabajo, se iteraron 7 veces, llegando al siguiente resultado:
